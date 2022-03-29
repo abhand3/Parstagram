@@ -9,7 +9,8 @@ import UIKit
 import AlamofireImage
 import Parse
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class CameraViewController: UIViewController, UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate {
     
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var commentField: UITextField!
@@ -27,7 +28,7 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         post["caption"] = commentField.text!
         post["author"] = PFUser.current()!
         
-        let imageData = imageView.image! .pngData()
+        let imageData = imageView.image!.pngData()
         let file = PFFileObject(name: "image.png", data: imageData!)
         
         post ["image"] = file
@@ -55,11 +56,11 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         present(picker, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMedisWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let image = info[.editedImage] as! UIImage
         
         let size =  CGSize(width: 300, height: 300)
-        let scaledImage = image.af.imageScaled(to: size)
+        let scaledImage = image.af.imageAspectScaled(toFill: size)
         
         imageView.image = scaledImage
         
